@@ -2,7 +2,7 @@ import EntityModel from '../models/entity.model';
 import Joi from 'joi';
 
 /**
- * Class responsible for controlling the
+ * Class responsible for controlling the entity entity. LOL.
  */
 export class EntityController {
     /**
@@ -55,14 +55,45 @@ export class EntityController {
                 const model = new EntityModel(value);
                 model.save()
                     .then(doc => res.status(201).json(doc))
-                    .catch(err => res.status(500).send({error: err.code === 11000 ? 'Record already exists' : err.errmsg}))
+                    .catch(err => res.status(500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
                 ;
             }
         });
     }
 
     update(req, res) {
+        const requestSchema = Joi.object().keys({
+            id: Joi.string().min(1).required()
+        });
+        const entitySchema = Joi.object().keys({
+            entity: Joi.string().min(1).required(),
+            fields: Joi.array().items(
+                Joi.object().keys({
+                    name: Joi.string().min(1).required(),
+                    required: Joi.boolean().required(),
+                    type: Joi.any().valid(['int', 'boolean', 'string', 'float', 'date']).required()
+                })
+            ).min(1).required()
+        });
 
+        /* Refactor this piece of code to avoid callback hell */
+        Joi.validate(req.params, requestSchema, err => {
+            if (err) {
+                res.status(422).json(err);
+            } else {
+                Joi.validate(req.body, entitySchema, (err, value) => {
+                    if (err) {
+                        res.status(422).json(err);
+                    } else {
+                        EntityModel.findByIdAndUpdate(req.params.id, {$set: value})
+                            .then(doc => doc.save())
+                            .then(() => res.status(200).json())
+                            .catch(err => res.status(500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
+                        ;
+                    }
+                });
+            }
+        });
     }
 
     /**
