@@ -161,15 +161,15 @@ export class GenericEntityController {
     static validateType(type) {
         switch (type) {
             case 'int':
-                return Joi.number().integer();
+                return Joi.number().integer().default(null);
             case 'boolean':
-                return Joi.boolean();
+                return Joi.boolean().default(null);
             case 'date':
-                return Joi.date();
+                return Joi.date().default(null);
             case 'float':
-                return Joi.number();
+                return Joi.number().default(null);
             case 'array':
-                return Joi.array();
+                return Joi.array().default(null);
             case 'string':
             default:
                 return Joi.string().allow('');
