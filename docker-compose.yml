@@ -6,4 +6,12 @@ db:
 web:
   image: node:7.9.0
   command: npm start
-
+  working_dir: /usr/src/app
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - 3000:3000
+  links:
+    - db
+  environment:
+    PORT: 3000
