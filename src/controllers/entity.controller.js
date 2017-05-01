@@ -1,5 +1,6 @@
 import EntityModel from '../models/entity.model';
 import Joi from 'joi';
+import mongoose from 'mongoose';
 
 /**
  * Class responsible for controlling the entity entity. LOL.
@@ -25,10 +26,14 @@ export class EntityController {
      * @param res
      */
     findById(req, res) {
-        EntityModel.findById(req.params.id)
-            .then(entity => res.status(entity !== null ? 200 : 404).json(entity))
-            .catch(error => res.status(500).json(error))
-        ;
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            EntityModel.findById(req.params.id)
+                .then(entity => res.status(entity !== null ? 200 : 404).json(entity))
+                .catch(error => res.status(500).json(error))
+            ;
+        } else {
+            res.status(404).json({erro: `Could not find object ${req.params.entity} with id ${req.params.id}`});
+        }
     }
 
     /**
@@ -43,7 +48,7 @@ export class EntityController {
                 Joi.object().keys({
                     name: Joi.string().min(1).required(),
                     required: Joi.boolean().required(),
-                    type: Joi.any().valid(['int', 'boolean', 'string', 'float', 'date']).required()
+                    type: Joi.any().valid(['int', 'boolean', 'string', 'float', 'date', 'array']).required()
                 })
             ).min(1).required()
         });
