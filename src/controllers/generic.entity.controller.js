@@ -107,20 +107,15 @@ export class GenericEntityController {
      * @param res
      */
     destroy(req, res) {
-        const schema = Joi.object().keys({
-            id: Joi.string().min(1).required()
-        });
-
-        Joi.validate(req.params, schema, (err, value) => {
-            if (err) {
-                res.status(422).json(err.details);
-            } else {
-                EntityModel.findByIdAndRemove(value.id)
-                    .then(doc => res.status(204).json())
-                    .catch(err => res.status(500).json(err))
-                ;
-            }
-        });
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            GenericEntityModel(req.params.entity)
+                .then(model => model.findByIdAndRemove(req.params.id))
+                .then(doc => res.status(204).json())
+                .catch(err => res.status(500).json(err))
+            ;
+        } else {
+            res.status(404).json({erro: `Could not find object ${req.params.entity} with id ${req.params.id}`});
+        }
     }
 
     /**
