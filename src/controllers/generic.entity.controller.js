@@ -67,38 +67,20 @@ export class GenericEntityController {
      * @param res
      */
     update(req, res) {
-        const requestSchema = Joi.object().keys({
-            id: Joi.string().min(1).required()
-        });
-        const entitySchema  = Joi.object().keys({
-            entity: Joi.string().min(1).required(),
-            fields: Joi.array().items(
-                Joi.object().keys({
-                    name    : Joi.string().min(1).required(),
-                    required: Joi.boolean().required(),
-                    type    : Joi.any().valid(['int', 'boolean', 'string', 'float', 'date']).required()
-                })
-            ).min(1).required()
-        });
-
-        /* Refactor this piece of code to avoid callback hell */
-        Joi.validate(req.params, requestSchema, err => {
-            if (err) {
-                res.status(422).json(err);
-            } else {
-                Joi.validate(req.body, entitySchema, (err, value) => {
-                    if (err) {
-                        res.status(422).json(err);
-                    } else {
-                        EntityModel.findByIdAndUpdate(req.params.id, {$set: value})
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            this.validate(req.params.entity, req.body)
+                .then(body => {
+                    GenericEntityModel(req.params.entity)
+                        .then(model => model.findByIdAndUpdate(req.params.id, {$set: body}))
                             .then(doc => doc.save())
                             .then(() => res.status(200).json())
                             .catch(err => res.status(500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
-                        ;
-                    }
-                });
-            }
-        });
+                    ;
+                })
+                .catch(err => res.status(500).json(err));
+        } else {
+            res.status(404).json({erro: `Could not find object ${req.params.entity} with id ${req.params.id}`});
+        }
     }
 
     /**
@@ -140,6 +122,11 @@ export class GenericEntityController {
         });
     }
 
+    /**
+     * Helper method to create a Joi validator schema and return it inside a promise.
+     * @param data
+     * @returns {Promise.<*>}
+     */
     static createJoiSchema(data) {
         let joiSchema = {};
         for (const field of data.fields) {
@@ -152,6 +139,12 @@ export class GenericEntityController {
         return Promise.resolve(Joi.object().keys(joiSchema));
     }
 
+    /**
+     * Set if the field is required or not.
+     * @param joiValidation
+     * @param isRequired
+     * @returns {*}
+     */
     static validateRequired(joiValidation, isRequired) {
         if (isRequired) {
             return joiValidation.required();
@@ -160,6 +153,11 @@ export class GenericEntityController {
         return joiValidation;
     }
 
+    /**
+     * Create dinamycally the type of Joi validator. @WIP: need improvement.
+     * @param type
+     * @returns {*}
+     */
     static validateType(type) {
         switch (type) {
             case 'int':
