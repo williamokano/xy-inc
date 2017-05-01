@@ -1,18 +1,13 @@
-import {DefaultModel} from './default.model';
+import mongoose from 'mongoose';
 
-export class EntityModel extends DefaultModel {
-    getSchema() {
-        return {
-            _id: {
-                type: String
-            },
-            entity: {
-                type: String,
-                index: {
-                    unique: true
-                }
-            },
-            fields: Array
+const schema = new mongoose.Schema({
+    entity: {
+        type: String,
+        index: {
+            unique: true
         }
-    }
-}
+    },
+    fields: Array
+}, {timestamps: true});
+
+export default mongoose.model('entity', schema, 'resource');
