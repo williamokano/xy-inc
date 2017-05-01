@@ -61,11 +61,29 @@ export class EntityController {
         });
     }
 
-    update(id, data) {
+    update(req, res) {
 
     }
 
-    remove(id) {
+    /**
+     * Delete some document with the given id.
+     * @param req
+     * @param res
+     */
+    destroy(req, res) {
+        const schema = Joi.object().keys({
+            id: Joi.string().min(1).required()
+        });
 
+        Joi.validate(req.params, schema, (err, value) => {
+            if (err) {
+                res.status(422).json(err.details);
+            } else {
+                EntityModel.findByIdAndRemove(value.id)
+                    .then(doc => res.status(204).json())
+                    .catch(err => res.status(500).json(err))
+                ;
+            }
+        });
     }
 }

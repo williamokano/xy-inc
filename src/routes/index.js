@@ -10,6 +10,7 @@ const entityController = new EntityController();
 router.get('/entity', (req, res) => entityController.index(req, res));
 router.get('/entity/:id', (req, res) => entityController.findById(req, res));
 router.post('/entity', (req, res) => entityController.create(req, res));
+router.delete('/entity/:id', (req, res) => entityController.destroy(req, res));
 
 /**
  * Resource routes
