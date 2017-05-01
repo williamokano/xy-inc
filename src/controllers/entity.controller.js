@@ -60,7 +60,7 @@ export class EntityController {
                 const model = new EntityModel(value);
                 model.save()
                     .then(doc => res.status(201).json(doc))
-                    .catch(err => res.status(500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
+                    .catch(err => res.status(500).json({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
                 ;
             }
         });
