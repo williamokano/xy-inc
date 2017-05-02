@@ -60,6 +60,7 @@ describe('Create endpoints /users', function () {
                 expect(res.body[0]).to.have.property('entity');
                 expect(res.body[0].entity).to.be.equal('users');
                 done();
-            });
+            })
+        ;
     });
 });
