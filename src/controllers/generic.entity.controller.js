@@ -12,7 +12,7 @@ export class GenericEntityController {
      * @param req
      * @param res
      */
-    index(req, res) {
+    static index(req, res) {
         GenericEntityModel(req.params.entity)
             .then(model => model.find(req.query).exec())
             .then(entities => res.json(entities))
@@ -25,7 +25,7 @@ export class GenericEntityController {
      * @param req
      * @param res
      */
-    findById(req, res) {
+    static findById(req, res) {
         if (mongoose.Types.ObjectId.isValid(req.params.id)) {
             GenericEntityModel(req.params.entity)
                 .then(model => model.findById(req.params.id))
@@ -42,8 +42,8 @@ export class GenericEntityController {
      * @param req
      * @param res
      */
-    create(req, res) {
-        this.validate(req.params.entity, req.body)
+    static create(req, res) {
+        GenericEntityController.validate(req.params.entity, req.body)
             .then(body => new Promise((resolve, reject) => {
                 GenericEntityModel(req.params.entity)
                     .then(model => model.create(body, (err, doc) => {
@@ -66,9 +66,9 @@ export class GenericEntityController {
      * @param req
      * @param res
      */
-    update(req, res) {
+    static update(req, res) {
         if (mongoose.Types.ObjectId.isValid(req.params.id)) {
-            this.validate(req.params.entity, req.body)
+            GenericEntityController.validate(req.params.entity, req.body)
                 .then(body => {
                     GenericEntityModel(req.params.entity)
                         .then(model => model.findByIdAndUpdate(req.params.id, {$set: body}))
@@ -88,7 +88,7 @@ export class GenericEntityController {
      * @param req
      * @param res
      */
-    destroy(req, res) {
+    static destroy(req, res) {
         if (mongoose.Types.ObjectId.isValid(req.params.id)) {
             GenericEntityModel(req.params.entity)
                 .then(model => model.findByIdAndRemove(req.params.id))
@@ -106,7 +106,7 @@ export class GenericEntityController {
      * @param body
      * @returns {Promise}
      */
-    validate(entity, body) {
+    static validate(entity, body) {
         return new Promise((resolve, reject) => {
             EntityModel.findOne({entity})
                 .then(doc => GenericEntityController.createJoiSchema(doc))

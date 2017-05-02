@@ -11,7 +11,7 @@ export class EntityController {
      * @param req
      * @param res
      */
-    index(req, res) {
+    static index(req, res) {
         EntityModel
             .find(req.query)
             .exec()
@@ -25,7 +25,7 @@ export class EntityController {
      * @param req
      * @param res
      */
-    findById(req, res) {
+    static findById(req, res) {
         if (mongoose.Types.ObjectId.isValid(req.params.id)) {
             EntityModel.findById(req.params.id)
                 .then(entity => res.status(entity !== null ? 200 : 404).json(entity))
@@ -41,7 +41,7 @@ export class EntityController {
      * @param req
      * @param res
      */
-    create(req, res) {
+    static create(req, res) {
         const schema = Joi.object().keys({
             entity: Joi.string().min(1).required(),
             fields: Joi.array().items(
@@ -66,7 +66,7 @@ export class EntityController {
         });
     }
 
-    update(req, res) {
+    static update(req, res) {
         const requestSchema = Joi.object().keys({
             id: Joi.string().min(1).required()
         });
@@ -106,7 +106,7 @@ export class EntityController {
      * @param req
      * @param res
      */
-    destroy(req, res) {
+    static destroy(req, res) {
         const schema = Joi.object().keys({
             id: Joi.string().min(1).required()
         });
