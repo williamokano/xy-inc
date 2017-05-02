@@ -154,12 +154,70 @@ describe('Populating endpoint /users', function () {
                         request(app).get(endpoint)
                             .expect(200)
                             .end((err, res) => {
+                                if (err) return done(err);
+
                                 expect(res.body[0].firstname).to.be.equal('William Johnson');
                                 expect(res.body[0].lastname).to.be.equal('dos Santos Okano');
 
                                 done();
                             })
                         ;
+                    })
+                ;
+            })
+        ;
+    });
+
+    it('should delete the second user', function (done) {
+        request(app).get(endpoint)
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+
+                request(app).delete(`${endpoint}/${res.body[1]._id}`)
+                    .expect(204)
+                    .end((err) => {
+                        if (err) return done(err);
+
+                        request(app).get(endpoint)
+                            .expect(200)
+                            .end((err, res) => {
+                                if (err) return done(err);
+
+                                expect(res.body[0].firstname).to.be.equal('William Johnson');
+                                expect(res.body[0].lastname).to.be.equal('dos Santos Okano');
+
+                                expect(res.body.length).to.be.equal(1);
+
+                                done();
+                            })
+                        ;
+                    })
+                ;
+            })
+        ;
+    });
+
+    it('should be able to find a resource by id', function (done) {
+        request(app).get(endpoint)
+            .expect(200)
+            .end((err, initialRes) => {
+                if (err) return done(err);
+
+                request(app).get(`${endpoint}/${initialRes.body[0]._id}`)
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) return done(err);
+
+                        expect(res.body).to.have.property('firstname');
+                        expect(res.body).to.have.property('lastname');
+                        expect(res.body).to.have.property('age');
+                        expect(res.body.firstname).to.be.equal('William Johnson');
+                        expect(res.body.lastname).to.be.equal('dos Santos Okano');
+                        expect(res.body.firstname).to.be.equal(initialRes.body[0].firstname);
+                        expect(res.body.lastname).to.be.equal(initialRes.body[0].lastname);
+
+                        done();
                     })
                 ;
             })
