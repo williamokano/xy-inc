@@ -146,7 +146,7 @@ Utilizaremos o exemplo criado acima, `usuario`.
 ### Deletando um usuário
 `DELETE /usuario/8372819283af` e será retornado um código http 204 (No Content)
 
-# Instação
+# Instalação
 Você precisa do yarn!  
 `npm instal -g yarn`
 
