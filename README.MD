@@ -5,16 +5,18 @@ Zup developer test
 You need yarn!  
 `npm instal -g yarn`
 
-Then just  
+Then clone this project:  
+`git clone git@github.com:williamokano/xy-inc.git`
+
+and then just run  
 `yarn install`
 
-You can choose to have either docker-compose to install all the needed containers or nodejs 6+ and mongodb to run on your localhost.
-
-# Run
-You can choose the app with one of the following
+# Running
+You can choose to have either docker-compose to install all the needed containers or nodejs 6+ and mongodb to run on your localhost.  
+You can choose the app with one of the following:
 
 ## With docker-compose and docker
-`docker-compose up` and open browser at `http://localhost:3000`
+Just type `docker-compose up` and open browser at `http://localhost:3000`
 
 ## Manually
 You need
