@@ -21,6 +21,11 @@
         "name": "balance",
         "type": "float",
         "required": false
+      },
+      {
+        "name": "roles",
+        "type": "array",
+        "required": false
       }
     ]
   },
@@ -38,7 +43,8 @@
     "when_empty": {
       "firstname": "William",
       "lastname": "Okano",
-      "age": 28
+      "age": 28,
+      "roles": [1, 2, 3, 4]
     },
     "without_required_firstname": {
       "lastname": "Okano"

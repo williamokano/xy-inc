@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 /**
  * Load the correct env file
  */
+/* istanbul ignore next */
 if (process.env.NODE_ENV === 'prod') {
     dotenv.config({path: `${__dirname}/envs/prod.env`});
 } else if (process.env.NODE_ENV === 'test') {
@@ -27,6 +28,7 @@ const app = express();
  */
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
+/* istanbul ignore next  */
 mongoose.connection.on('error', err => {
     console.error(err);
     console.log('Could not connect to mongodb, make sure it is running');
@@ -62,6 +64,7 @@ app.use(function (req, res) {
 /**
  * Error handler
  */
+/* istanbul ignore next  */
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;

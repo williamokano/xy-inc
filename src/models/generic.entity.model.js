@@ -17,7 +17,7 @@ function mapType (type) {
         case 'int':
         case 'float':
             return Number;
-        case 'arrray':
+        case 'array':
             return Array;
         case 'date':
             return Date;
