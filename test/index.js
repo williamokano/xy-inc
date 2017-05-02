@@ -57,6 +57,94 @@ describe('Create endpoint /users', function () {
                 expect(res.body).to.not.be.empty;
                 expect(res.body[0]).to.have.property('entity');
                 expect(res.body[0].entity).to.be.equal('users');
+                expect(res.body.length).to.be.equal(1);
+
+                request(app).get(`/entity/${res.body[0]._id}`)
+                    .expect(200, done)
+                ;
+            })
+        ;
+    });
+
+    it('should return 404 for a non-existing entity', function (done) {
+        request(app).get('/entity/32165498712a')
+            .expect(404, done)
+        ;
+    });
+
+    it('should be able to create a second entity', function (done) {
+        request(app).post('/entity')
+            .send(mocks.create_test_entity)
+            .expect(201, done)
+        ;
+    });
+
+    it('shoult now have 2 entities', function (done) {
+        request(app).get('/entity')
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+
+                expect(res.body.length).to.be.equal(2);
+                done();
+            })
+        ;
+    });
+
+    it('should be able to update an entity', function (done) {
+        request(app).get('/entity')
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+
+                request(app).put(`/entity/${res.body[1]._id}`)
+                    .send(mocks.update_test_entity)
+                    .expect(200, done)
+                ;
+            })
+        ;
+    });
+
+    it('should not be able to update a non-existing entity', function (done) {
+        request(app).get('/entity')
+            .expect(200)
+            .end((err) => {
+                if (err) return done(err);
+
+                request(app).put('/entity/32123')
+                    .send(mocks.update_test_entity)
+                    .expect(404, done)
+                ;
+            })
+        ;
+    });
+
+    it('should not be able to find a non-existing entity', function (done) {
+        request(app).get('/entity/32132211')
+            .expect(404, done)
+        ;
+    });
+
+    it('should be able to delete an entity', function (done) {
+        request(app).get('/entity')
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+
+                request(app).delete(`/entity/${res.body[1]._id}`)
+                    .expect(204, done)
+                ;
+            })
+        ;
+    });
+
+    it('shoult now have 1 entities', function (done) {
+        request(app).get('/entity')
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+
+                expect(res.body.length).to.be.equal(1);
                 done();
             })
         ;

@@ -39,6 +39,31 @@
       }
     ]
   },
+  "create_test_entity": {
+    "entity": "test_ent",
+    "fields": [
+      {
+        "name": "test",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  "update_test_entity": {
+    "entity": "test_ent",
+    "fields": [
+      {
+        "name": "test",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "name": "secondtest",
+        "required": false,
+        "type": "float"
+      }
+    ]
+  },
   "populating_users": {
     "when_empty": {
       "firstname": "William",
