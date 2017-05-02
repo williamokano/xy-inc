@@ -47,8 +47,8 @@ export class EntityController {
             fields: Joi.array().items(
                 Joi.object().keys({
                     name: Joi.string().min(1).required(),
-                    required: Joi.boolean().required(),
-                    type: Joi.any().valid(['int', 'boolean', 'string', 'float', 'date', 'array']).required()
+                    required: Joi.boolean().default(false).required(),
+                    type: Joi.any().default('string').valid(['int', 'boolean', 'string', 'float', 'date', 'array']).required()
                 })
             ).min(1).required()
         });

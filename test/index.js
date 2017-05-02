@@ -1,6 +1,8 @@
-describe('Example Test', () => {
-    it('should return 200', done => {
-        assert.equal(200, 200);
-        done();
+import supertest from 'supertest';
+import app from '../src/app';
+
+describe('Make home request', function () {
+    it("Show an 404 error", function (done) {
+
     });
 });
