@@ -14,7 +14,7 @@ You can choose to have either docker-compose to install all the needed container
 You can choose the app with one of the following
 
 ## With docker-compose and docker
-
+`docker-compose up` and open browser at `http://localhost:3000`
 
 ## Manually
 You need
@@ -22,4 +22,11 @@ You need
 - mongodb
 - yarn
 
-Fix the config with the needed configuration then run `yarn start`
+Fix the envs files inside `src/envs` with the needed configuration then run `yarn start`
+
+# Tests
+To execute the tests just run  
+`yarn test`
+
+If you want to check the code coverage, run  
+`yarn test:coverage`
