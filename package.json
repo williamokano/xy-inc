@@ -9,7 +9,7 @@
     "start": "nodemon src/bin/www --exec babel-node",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
-    "test": "mocha --compilers js:babel-register"
+    "test": "NODE_ENV=test mocha --compilers js:babel-register"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
@@ -26,6 +26,8 @@
     "chai": "^3.5.0",
     "mocha": "^3.3.0",
     "nodemon": "^1.11.0",
+    "request": "^2.81.0",
+    "should": "^11.2.1",
     "supertest": "^3.0.0"
   },
   "directories": {

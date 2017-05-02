@@ -1,7 +1,7 @@
 db:
   image: mongo
   ports:
-    - 27017
+    - 27017:27017
 
 web:
   image: node:7.9.0

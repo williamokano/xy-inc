@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 if (process.env.NODE_ENV === 'prod') {
     dotenv.config({path: `${__dirname}/envs/prod.env`});
 } else if (process.env.NODE_ENV === 'test') {
+    console.log('Testing mode');
     dotenv.config({path: `${__dirname}/envs/test.env`});
 } else {
     dotenv.config({path: `${__dirname}/envs/dev.env`});
@@ -27,9 +28,13 @@ const app = express();
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', err => {
-    console.err(err);
+    console.error(err);
     console.log('Could not connect to mongodb, make sure it is running');
     process.exit(1);
+});
+
+mongoose.connection.on('connected', () => {
+    console.log(`Mongoose connected to ${process.env.MONGODB_URI}`);
 });
 
 app.set('db', mongoose);

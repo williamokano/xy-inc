@@ -1,0 +1,17 @@
+{
+  "create_users": {
+    "entity": "users",
+    "fields": [
+      {
+        "name": "firstname",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "lastname",
+        "type": "string",
+        "required": false
+      }
+    ]
+  }
+}
