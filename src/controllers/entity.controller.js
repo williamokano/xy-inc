@@ -43,7 +43,7 @@ export class EntityController {
      */
     static create(req, res) {
         const schema = Joi.object().keys({
-            entity: Joi.string().min(1).required(),
+            entity: Joi.string().min(1).invalid('entity').required(),
             fields: Joi.array().items(
                 Joi.object().keys({
                     name: Joi.string().min(1).required(),

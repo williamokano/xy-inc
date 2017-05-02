@@ -10,6 +10,8 @@ import mongoose from 'mongoose';
  */
 if (process.env.NODE_ENV === 'prod') {
     dotenv.config({path: `${__dirname}/envs/prod.env`});
+} else if (process.env.NODE_ENV === 'test') {
+    dotenv.config({path: `${__dirname}/envs/test.env`});
 } else {
     dotenv.config({path: `${__dirname}/envs/dev.env`});
 }
