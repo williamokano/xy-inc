@@ -17,10 +17,8 @@ describe('Application is running', function () {
     it('should return 404 for the home route', function (done) {
         request(app)
             .get('/')
-            .expect(404)
-            .end(() => {
-                done();
-            });
+            .expect(404, done)
+        ;
     });
 });
 
@@ -61,6 +59,16 @@ describe('Create endpoint /users', function () {
                 expect(res.body[0].entity).to.be.equal('users');
                 done();
             })
+        ;
+    });
+});
+
+describe('Trying to create an entity with the name entity', function () {
+    const endpoint = '/entity';
+    it('should return 422, since it is not allowed to create with this name', function (done) {
+        request(app).post(endpoint)
+            .send(mocks.create_entity_entity)
+            .expect(422, done)
         ;
     });
 });

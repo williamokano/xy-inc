@@ -11,13 +11,34 @@
         "name": "lastname",
         "type": "string",
         "required": false
+      },
+      {
+        "name": "age",
+        "type": "int",
+        "required": false
+      },
+      {
+        "name": "balance",
+        "type": "float",
+        "required": false
+      }
+    ]
+  },
+  "create_entity_entity": {
+    "entity": "entity",
+    "fields": [
+      {
+        "name": "entity",
+        "required": true,
+        "type": "string"
       }
     ]
   },
   "populating_users": {
     "when_empty": {
       "firstname": "William",
-      "lastname": "Okano"
+      "lastname": "Okano",
+      "age": 28
     },
     "without_required_firstname": {
       "lastname": "Okano"
