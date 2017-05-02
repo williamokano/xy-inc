@@ -33,13 +33,17 @@ export default function createModel(entity_name) {
         EntityModel
             .findOne({entity: entity_name})
             .then(doc => {
-                const schema = new mongoose.Schema(buildSchemaFromDoc(doc), {timestamps: true, strict: true});
+                if (doc !== null) {
+                    const schema = new mongoose.Schema(buildSchemaFromDoc(doc), {timestamps: true, strict: true});
 
-                if (!models[entity_name]) {
-                    models[entity_name] = mongoose.model(entity_name, schema, entity_name);
+                    if (!models[entity_name]) {
+                        models[entity_name] = mongoose.model(entity_name, schema, entity_name);
+                    }
+
+                    resolve(models[entity_name]);
+                } else {
+                    reject({status: 404, error: `Entity ${entity_name} not found`});
                 }
-
-                resolve(models[entity_name]);
             })
             .catch(err => reject(err))
         ;

@@ -16,7 +16,7 @@ export class GenericEntityController {
         GenericEntityModel(req.params.entity)
             .then(model => model.find(req.query).exec())
             .then(entities => res.json(entities))
-            .catch(error => res.status(500).json(error))
+            .catch(error => res.status(error.status || 500).json(error))
         ;
     }
 
@@ -30,7 +30,7 @@ export class GenericEntityController {
             GenericEntityModel(req.params.entity)
                 .then(model => model.findById(req.params.id))
                 .then(entity => res.status(entity !== null ? 200 : 404).json(entity))
-                .catch(error => res.status(500).json(error))
+                .catch(err => res.status(err.status || 500).json(error))
             ;
         } else {
             res.status(404).json({erro: `Could not find object ${req.params.entity} with id ${req.params.id}`});
@@ -54,10 +54,10 @@ export class GenericEntityController {
                         }
                     }))
                     .then(doc => res.status(201).json(doc))
-                    .catch(err => res.status(500).json({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
+                    .catch(err => res.status(err.status || 500).json({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
                 ;
             }))
-            .catch(err => res.status(500).json({error: err}))
+            .catch(err => res.status(err.status || 500).json({error: err}))
         ;
     }
 
@@ -74,7 +74,7 @@ export class GenericEntityController {
                         .then(model => model.findByIdAndUpdate(req.params.id, {$set: body}))
                             .then(doc => doc.save())
                             .then(() => res.status(200).json())
-                            .catch(err => res.status(500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
+                            .catch(err => res.status(err.status || 500).send({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
                     ;
                 })
                 .catch(err => res.status(500).json(err));
@@ -93,7 +93,7 @@ export class GenericEntityController {
             GenericEntityModel(req.params.entity)
                 .then(model => model.findByIdAndRemove(req.params.id))
                 .then(doc => res.status(204).json())
-                .catch(err => res.status(500).json(err))
+                .catch(err => res.status(err.status || 500).json(err))
             ;
         } else {
             res.status(404).json({erro: `Could not find object ${req.params.entity} with id ${req.params.id}`});
