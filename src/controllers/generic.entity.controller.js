@@ -57,7 +57,7 @@ export class GenericEntityController {
                     .catch(err => res.status(err.status || 500).json({error: err.code === 11000 ? `Entity ${req.body.entity} already exists` : err.errmsg}))
                 ;
             }))
-            .catch(err => res.status(err.status || 500).json({error: err}))
+            .catch(err => res.status(err.status || 422).json({error: err}))
         ;
     }
 
