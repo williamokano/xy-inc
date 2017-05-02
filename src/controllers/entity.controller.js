@@ -115,6 +115,7 @@ export class EntityController {
             if (err) {
                 res.status(422).json(err.details);
             } else {
+                EntityModel.findById(value.id).then(doc => mongoose.connection.collections[doc.entity].drop());
                 EntityModel.findByIdAndRemove(value.id)
                     .then(doc => res.status(204).json())
                     .catch(err => res.status(500).json(err))

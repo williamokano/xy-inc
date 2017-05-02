@@ -13,5 +13,22 @@
         "required": false
       }
     ]
+  },
+  "populating_users": {
+    "when_empty": {
+      "firstname": "William",
+      "lastname": "Okano"
+    },
+    "without_required_firstname": {
+      "lastname": "Okano"
+    },
+    "second_user": {
+      "firstname": "Zup",
+      "lastname": "IT"
+    },
+    "updating_first_user": {
+      "firstname": "William Johnson",
+      "lastname": "dos Santos Okano"
+    }
   }
 }
